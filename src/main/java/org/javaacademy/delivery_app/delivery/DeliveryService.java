@@ -7,6 +7,7 @@ import org.javaacademy.delivery_app.order.OrderService;
 import org.javaacademy.delivery_app.restaurant.Restaurant;
 import org.javaacademy.delivery_app.restaurant.RestaurantService;
 import org.javaacademy.delivery_app.user.UserService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -16,6 +17,8 @@ import java.util.List;
 @RequiredArgsConstructor
 @Slf4j
 public class DeliveryService {
+    @Value("${delivery.currency}")
+    private String currency;
     private final RestaurantService restaurantService;
     private final UserService userService;
     private final OrderService orderService;
@@ -34,11 +37,12 @@ public class DeliveryService {
         userService.createUser(email, password);
     }
 
-    public void takeOrder(String userEmail,
+    public BigDecimal takeOrder(String userEmail,
                        String password,
                        String restaurantName,
                        List<String> foodList) {
         BigDecimal result = orderService.takeOrder(userEmail, password, restaurantName, foodList);
-        log.info("Заказ вам будет стоить: " + result);
+        log.info("Заказ вам будет стоить: {} {}", result, currency);
+        return  result;
     }
 }

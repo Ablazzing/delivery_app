@@ -24,4 +24,8 @@ public class RestaurantRepository {
         return new ArrayList<>(restaurants.values());
     }
 
+    public void deleteAll() {
+        restaurants.clear();
+    }
+
 }
